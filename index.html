@@ -1,14 +1,33 @@
-<script>
-    window.onload = () => {
-        const context = new AudioContext();
-        fetch("sound_70957.mp3")
-            .then(r => r.arrayBuffer())
-            .then(buf => context.decodeAudioData(buf))
-            .then(decoded => {
-                const source = context.createBufferSource();
-                source.buffer = decoded;
-                source.connect(context.destination);
-                source.start(0);
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NFC Control</title>
+</head>
+<body>
+    <audio id="audio" src="sound.mp3"></audio>
+    <script>
+        if ('NDEFReader' in window) {
+            const reader = new NDEFReader();
+            
+            // Запрос разрешения при клике
+            document.body.addEventListener('click', async () => {
+                await reader.scan();
+                console.log("Готово к сканированию NFC...");
             });
-    };
-</script>
+
+            // Обработка данных с метки
+            reader.onreading = event => {
+                const record = event.message.records[0];
+                if (record.recordType === "json") {
+                    const data = JSON.parse(record.data);
+                    if (data.action === "play") {
+                        document.getElementById("audio").play();
+                    }
+                }
+            };
+        } else {
+            alert("Web NFC не поддерживается в вашем браузере!");
+        }
+    </script>
+</body>
+</html>
