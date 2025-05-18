@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>NFC Sound</title>
-    <script>
-        // Первая страница: имитирует клик и перенаправляет
-        if (window.location.hash !== "#played") {
-            window.location.href = "#played";
-            setTimeout(() => {
-                const audio = new Audio("sound_70957.mp3");
-                audio.play().catch(e => console.log("Ошибка:", e));
-            }, 300);
-        }
-    </script>
-</head>
-<body></body>
-</html>
+<script>
+    window.onload = () => {
+        const context = new AudioContext();
+        fetch("sound_70957.mp3")
+            .then(r => r.arrayBuffer())
+            .then(buf => context.decodeAudioData(buf))
+            .then(decoded => {
+                const source = context.createBufferSource();
+                source.buffer = decoded;
+                source.connect(context.destination);
+                source.start(0);
+            });
+    };
+</script>
