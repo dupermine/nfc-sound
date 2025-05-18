@@ -2,14 +2,16 @@
 <html>
 <head>
     <title>NFC Sound</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Первая страница: имитирует клик и перенаправляет
+        if (window.location.hash !== "#played") {
+            window.location.href = "#played";
+            setTimeout(() => {
+                const audio = new Audio("sound_70957.mp3");
+                audio.play().catch(e => console.log("Ошибка:", e));
+            }, 300);
+        }
+    </script>
 </head>
-<body>
-    <h1>Стан воспроизводится автоматически...</h1>
-    <audio autoplay>
-        <source src="moan.mp3" type="audio/mpeg">
-        Ваш браузер не поддерживает аудио.
-    </audio>
-    <p>Если звук не играет, нажмите <a href="sound_70957.mp3">ссылку</a>.</p>
-</body>
+<body></body>
 </html>
