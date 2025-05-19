@@ -2,14 +2,24 @@
 <html>
 <head>
     <style>
-        /* Фоновое изображение */
+        /* Контейнер для видео */
+        #video-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        /* Основной контент поверх видео */
         body {
-            background-image: url('background.jpg'); /* Укажите имя вашего файла */
-            background-size: cover; /* Растянуть на весь экран */
-            background-position: center; /* Центрировать */
-            background-repeat: no-repeat;
             margin: 0;
-            height: 100vh;
+            overflow: hidden;
         }
 
         #invisibleButton {
@@ -24,28 +34,43 @@
         }
 
         audio {
-            display: none; /* Полностью скрыть аудио-элемент */
+            display: none;
         }
     </style>
 </head>
 <body>
+    <!-- Фоновое видео -->
+    <video autoplay muted loop id="video-background">
+        <source src="background.mp4" type="video/mp4">
+        <!-- Добавьте дополнительные форматы для совместимости -->
+        <source src="background.webm" type="video/webm">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <!-- Аудио и кнопка -->
     <audio id="audioPlayer" controls hidden loop playsinline>
         <source src="sound_70957.mp3" type="audio/mpeg">
     </audio>
-
     <button id="invisibleButton"></button>
 
     <script>
         const audio = document.getElementById('audioPlayer');
         const button = document.getElementById('invisibleButton');
 
+        // Запуск аудио и видео
         async function handleFirstClick() {
             try {
+                // Запускаем аудио
                 await audio.play();
                 audio.autoplay = true;
+                
+                // Запускаем видео (если требуется)
+                const video = document.getElementById('video-background');
+                await video.play();
+                
                 button.style.display = 'none';
             } catch (err) {
-                console.error('Ошибка воспроизведения:', err);
+                console.error('Ошибка:', err);
             }
         }
 
