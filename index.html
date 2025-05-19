@@ -2,6 +2,16 @@
 <html>
 <head>
     <style>
+        /* Фоновое изображение */
+        body {
+            background-image: url('background.jpg'); /* Укажите имя вашего файла */
+            background-size: cover; /* Растянуть на весь экран */
+            background-position: center; /* Центрировать */
+            background-repeat: no-repeat;
+            margin: 0;
+            height: 100vh;
+        }
+
         #invisibleButton {
             position: fixed;
             top: 0;
@@ -11,6 +21,10 @@
             opacity: 0;
             cursor: pointer;
             z-index: 9999;
+        }
+
+        audio {
+            display: none; /* Полностью скрыть аудио-элемент */
         }
     </style>
 </head>
@@ -25,35 +39,18 @@
         const audio = document.getElementById('audioPlayer');
         const button = document.getElementById('invisibleButton');
 
-        // Функция для запуска аудио
-        async function startPlayback() {
+        async function handleFirstClick() {
             try {
                 await audio.play();
                 audio.autoplay = true;
                 button.style.display = 'none';
             } catch (err) {
-                console.error('Ошибка:', err);
+                console.error('Ошибка воспроизведения:', err);
             }
         }
 
-        // Проверка параметров URL при загрузке
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            // Вариант 1: через параметр ?autoplay=1
-            if (urlParams.get('autoplay') === '1') {
-                startPlayback();
-            }
-            
-            // Вариант 2: через хэш #autoplay
-            if (window.location.hash === '#autoplay') {
-                startPlayback();
-            }
-        };
-
-        // Ручной запуск по клику
-        button.addEventListener('click', startPlayback);
-        button.addEventListener('touchstart', startPlayback);
+        button.addEventListener('click', handleFirstClick);
+        button.addEventListener('touchstart', handleFirstClick);
     </script>
 </body>
 </html>
