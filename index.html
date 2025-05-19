@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-    <audio id="audioPlayer" controls hidden loop playsinline> <!-- Добавлены loop и playsinline -->
+    <audio id="audioPlayer" controls hidden loop playsinline>
         <source src="sound_70957.mp3" type="audio/mpeg">
     </audio>
 
@@ -25,18 +25,35 @@
         const audio = document.getElementById('audioPlayer');
         const button = document.getElementById('invisibleButton');
 
-        async function handleFirstClick() {
+        // Функция для запуска аудио
+        async function startPlayback() {
             try {
                 await audio.play();
-                audio.autoplay = true; 
+                audio.autoplay = true;
                 button.style.display = 'none';
             } catch (err) {
                 console.error('Ошибка:', err);
             }
         }
 
-        button.addEventListener('click', handleFirstClick);
-        button.addEventListener('touchstart', handleFirstClick);
+        // Проверка параметров URL при загрузке
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Вариант 1: через параметр ?autoplay=1
+            if (urlParams.get('autoplay') === '1') {
+                startPlayback();
+            }
+            
+            // Вариант 2: через хэш #autoplay
+            if (window.location.hash === '#autoplay') {
+                startPlayback();
+            }
+        };
+
+        // Ручной запуск по клику
+        button.addEventListener('click', startPlayback);
+        button.addEventListener('touchstart', startPlayback);
     </script>
 </body>
 </html>
