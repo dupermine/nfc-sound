@@ -2,7 +2,6 @@
 <html>
 <head>
     <style>
-        /* Невидимая кнопка на весь экран */
         #invisibleButton {
             position: fixed;
             top: 0;
@@ -16,7 +15,7 @@
     </style>
 </head>
 <body>
-    <audio id="audioPlayer" controls hidden>
+    <audio id="audioPlayer" controls hidden loop playsinline> <!-- Добавлены loop и playsinline -->
         <source src="sound_70957.mp3" type="audio/mpeg">
     </audio>
 
@@ -26,19 +25,16 @@
         const audio = document.getElementById('audioPlayer');
         const button = document.getElementById('invisibleButton');
 
-        // Обработчик первого клика
         async function handleFirstClick() {
             try {
                 await audio.play();
-                // После первого клика можно включить автовоспроизведение
-                audio.autoplay = true;
-                button.style.display = 'none'; // Скрываем кнопку
+                audio.autoplay = true; 
+                button.style.display = 'none';
             } catch (err) {
-                console.error('Ошибка воспроизведения:', err);
+                console.error('Ошибка:', err);
             }
         }
 
-        // Запуск при клике или тапе (для мобильных)
         button.addEventListener('click', handleFirstClick);
         button.addEventListener('touchstart', handleFirstClick);
     </script>
