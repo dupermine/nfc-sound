@@ -1,15 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>NFC Sound</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Невидимая кнопка на весь экран */
+        #invisibleButton {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
-    <h1>Стан воспроизводится автоматически...</h1>
-    <audio autoplay>
+    <audio id="audioPlayer" controls hidden>
         <source src="sound_70957.mp3" type="audio/mpeg">
-        Ваш браузер не поддерживает аудио.
     </audio>
-    <p>Если звук не играет, нажмите <a href="sound_70957.mp3">ссылку</a>.</p>
+
+    <button id="invisibleButton"></button>
+
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const button = document.getElementById('invisibleButton');
+
+        // Обработчик первого клика
+        async function handleFirstClick() {
+            try {
+                await audio.play();
+                // После первого клика можно включить автовоспроизведение
+                audio.autoplay = true;
+                button.style.display = 'none'; // Скрываем кнопку
+            } catch (err) {
+                console.error('Ошибка воспроизведения:', err);
+            }
+        }
+
+        // Запуск при клике или тапе (для мобильных)
+        button.addEventListener('click', handleFirstClick);
+        button.addEventListener('touchstart', handleFirstClick);
+    </script>
 </body>
 </html>
